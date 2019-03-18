@@ -33,11 +33,6 @@ const config = {
         exclude: /node_modules/,
         loader: 'babel-loader',
       },
-      // {
-      //   test: /\.vue$/,
-      //   exclude: /node_modules/,
-      //   loader: 'vue-loader'
-      // },
       {
         test: /\.(css|sass|scss)$/,
         use: [
@@ -81,7 +76,6 @@ const config = {
     inline: true,
     hot: true,
     port: 8080,
-    watchContentBase: true,
     contentBase: dist
   },
 }
