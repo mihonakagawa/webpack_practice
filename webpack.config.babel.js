@@ -1,33 +1,17 @@
-// const { VueLoaderPlugin } = require("vue-loader");
 import path from 'path';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 const nodeEnv = process.env.NODE_ENV || 'development';
-const isDev = nodeEnv === 'development';
+const devMode = nodeEnv === 'development';
+
 console.log('nodeEnv ==> ', nodeEnv);
-console.log('isDev ==> ', isDev);
-console.log(path.resolve(__dirname, 'src/js/components'));
+console.log('devMode ==> ', devMode);
 
 const src = path.resolve(__dirname, './src');
 const dist = path.resolve(__dirname, './public');
 
 const config = {
   mode: nodeEnv,
-  devtool: isDev ? 'source-map' : 'eval',
-  resolve: {
-    extensions: ['.js', '.json', '.vue'],
-    alias: {
-      Components: `${src}/js/components`,
-    }
-  },
-  // plugins: [new VueLoaderPlugin()],
-  devServer: {
-    open: true,
-    inline: true,
-    hot: true,
-    port: 8080,
-    watchContentBase: true,
-    contentBase: dist
-  },
   entry: {
     app: `${src}/js/app.js`
   },
@@ -57,12 +41,8 @@ const config = {
       {
         test: /\.(css|sass|scss)$/,
         use: [
-          {
-            loader: "style-loader"
-          },
-          {
-            loader: "css-loader"
-          },
+          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader',
           {
             loader: 'postcss-loader',
             options: {
@@ -87,7 +67,23 @@ const config = {
         ]
       }
     ]
-  }
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].css'
+    })
+  ],
+  resolve: {
+    extensions: ['.js', '.json']
+  },
+  devServer: {
+    open: 'Google Chrome',
+    inline: true,
+    hot: true,
+    port: 8080,
+    watchContentBase: true,
+    contentBase: dist
+  },
 }
 
 export default config;
