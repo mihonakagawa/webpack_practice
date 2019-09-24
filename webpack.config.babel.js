@@ -37,10 +37,16 @@ const config = {
         test: /\.(css|sass|scss)$/,
         use: [
           devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-          'css-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true
+            }
+          },
           {
             loader: 'postcss-loader',
             options: {
+              sourceMap: true,
               plugins: [
                 require('autoprefixer')({
                   grid: true,
